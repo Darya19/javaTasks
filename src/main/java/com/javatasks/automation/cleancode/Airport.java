@@ -1,10 +1,10 @@
 package com.javatasks.automation.cleancode;
 
+import com.javatasks.automation.cleancode.models.MilitaryType;
 import com.javatasks.automation.cleancode.planes.ExperimentalPlane;
 import com.javatasks.automation.cleancode.planes.MilitaryPlane;
 import com.javatasks.automation.cleancode.planes.PassengerPlane;
 import com.javatasks.automation.cleancode.planes.Plane;
-import com.javatasks.automation.cleancode.models.MilitaryType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,33 +30,25 @@ public class Airport {
     }
 
     public List<PassengerPlane> getPassengerPlanes() {
-        List<PassengerPlane> passengerPlanes = new ArrayList<>();
-        for (Plane plane : getPlanes()) {
-            if (plane instanceof PassengerPlane) {
-                passengerPlanes.add((PassengerPlane) plane);
-            }
-        }
-        return passengerPlanes;
+        return extractPlanesByType(PassengerPlane.class);
     }
 
     public List<MilitaryPlane> getMilitaryPlanes() {
-        List<MilitaryPlane> militaryPlanes = new ArrayList<>();
-        for (Plane plane : getPlanes()) {
-            if (plane instanceof MilitaryPlane) {
-                militaryPlanes.add((MilitaryPlane) plane);
-            }
-        }
-        return militaryPlanes;
+        return extractPlanesByType(MilitaryPlane.class);
     }
 
     public List<ExperimentalPlane> getExperimentalPlanes() {
-        List<ExperimentalPlane> experimentalPlanes = new ArrayList<>();
+        return extractPlanesByType(ExperimentalPlane.class);
+    }
+
+    private <T> List<T> extractPlanesByType(Class<T> clazz) {
+        List<T> planes = new ArrayList<>();
         for (Plane plane : getPlanes()) {
-            if (plane instanceof ExperimentalPlane) {
-                experimentalPlanes.add((ExperimentalPlane) plane);
+            if (clazz.isInstance(plane)) {
+                planes.add((T) plane);
             }
         }
-        return experimentalPlanes;
+        return planes;
     }
 
     public List<MilitaryPlane> getTransportMilitaryPlanes() {
@@ -78,7 +70,10 @@ public class Airport {
     }
 
     public PassengerPlane getPassengerPlaneWithMaxPassengersCapacity() {
-        return getPassengerPlanes().stream().max(Comparator.comparingInt(PassengerPlane::getPassengersCapacity)).get();
+        return getPassengerPlanes()
+                .stream()
+                .max(Comparator.comparingInt(PassengerPlane::getPassengersCapacity))
+                .orElseThrow(() -> new NullPointerException("Empty passenger planes list"));
     }
 
     public Airport sortByMaxDistance() {
@@ -97,9 +92,7 @@ public class Airport {
     }
 
     public void print(Collection<? extends Plane> planes) {
-        for (Plane plane : planes) {
-            System.out.println(plane);
-        }
+        planes.forEach(System.out::println);
     }
 
     @Override

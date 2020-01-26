@@ -1,16 +1,16 @@
 package com.javatasks.automation.cleancode;
 
+import com.javatasks.automation.cleancode.models.MilitaryType;
 import com.javatasks.automation.cleancode.planes.MilitaryPlane;
 import com.javatasks.automation.cleancode.planes.PassengerPlane;
 import com.javatasks.automation.cleancode.planes.Plane;
-import com.javatasks.automation.cleancode.models.MilitaryType;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Runner {
 
-    static List<Plane> planes = Arrays.asList(
+    private static List<Plane> planes = Arrays.asList(
             new PassengerPlane("Boeing-737", 900, 12000, 60500, 164),
             new PassengerPlane("Boeing-737-800", 940, 12300, 63870, 192),
             new PassengerPlane("Boeing-747", 980, 16100, 70500, 242),
@@ -31,13 +31,12 @@ public class Runner {
         Airport airport = new Airport(planes);
         Airport militaryAirport = new Airport(airport.getMilitaryPlanes());
         Airport passengerAirport = new Airport(airport.getPassengerPlanes());
-        System.out.println("Military airport sorted by max distance: " + militaryAirport
-                .sortByMaxDistance()
-                .toString());
-        System.out.println("Passenger airport sorted by max speed: " + passengerAirport
-                .sortByMaxSpeed()
-                .toString());
 
-        System.out.println("Plane with max passenger capacity: " + passengerAirport.getPassengerPlaneWithMaxPassengersCapacity());
+        System.out.println("Military airport sorted by max distance: \n" + militaryAirport
+                .sortByMaxDistance());
+        System.out.println("Passenger airport sorted by max speed: \n" + passengerAirport
+                .sortByMaxSpeed());
+        System.out.println("Plane with max passenger capacity: \n" + passengerAirport
+                .getPassengerPlaneWithMaxPassengersCapacity());
     }
 }

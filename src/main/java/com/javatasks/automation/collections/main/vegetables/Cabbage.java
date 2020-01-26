@@ -3,7 +3,7 @@ package com.javatasks.automation.collections.main.vegetables;
 import java.util.Objects;
 
 public class Cabbage extends Vegetable {
-    String name;
+    private String name;
 
     public Cabbage(double calories, double fats, double proteins, double carbohydrates, double weight, String name) {
         super(calories, fats, proteins, carbohydrates, weight);

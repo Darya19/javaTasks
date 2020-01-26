@@ -3,6 +3,7 @@ package com.javatasks.automation.collections.main.vegetables;
 import java.util.Objects;
 
 public abstract class Vegetable {
+
     private double calories;
     private double fats;
     private double proteins;

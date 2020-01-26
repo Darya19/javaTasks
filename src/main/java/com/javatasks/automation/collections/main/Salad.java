@@ -1,56 +1,61 @@
 package com.javatasks.automation.collections.main;
 
-import com.javatasks.automation.collections.main.vegetables.Cabbage;
-import com.javatasks.automation.collections.main.vegetables.RootCrop;
 import com.javatasks.automation.collections.main.vegetables.Vegetable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 public class Salad {
-    private List<? extends Vegetable> listOfVegetables;
+    private List<Vegetable> listOfVegetables;
 
-    public Salad(List<? extends Vegetable> listOfVegetables) {
-        this.listOfVegetables = listOfVegetables;
+    public Salad(List<Vegetable> listOfVegetables) {
+        this.listOfVegetables = new ArrayList<>(listOfVegetables);
     }
 
     public List<? extends Vegetable> getListOfVegetables() {
         return listOfVegetables;
     }
 
-    public List<Vegetable> getSummerSalad() {
-        ArrayList<Vegetable> summerSalad = new ArrayList<>();
-        for (Vegetable vegetable : listOfVegetables) {
-            if (vegetable instanceof RootCrop)
-                summerSalad.add(vegetable);
-            if(vegetable instanceof Cabbage) {
-                summerSalad.add(vegetable);
-            }
-        }
-        return summerSalad;
+    public void addVegetable(Vegetable... vegetables) {
+        this.listOfVegetables.addAll(Arrays.asList(vegetables));
     }
 
-    public double getSaladCalories(){
+    public double getSaladCalories() {
         double saladCalories = 0;
-        for(Vegetable vegetable : getSummerSalad()){
-          saladCalories += vegetable.getCalories();
+        for (Vegetable vegetable : listOfVegetables) {
+            saladCalories += vegetable.getCalories();
         }
         return saladCalories;
     }
 
-    public List<Vegetable> sortByProteins(){
-        ArrayList<Vegetable> summerSalad = new ArrayList<>(getSummerSalad());
-        summerSalad.sort(Comparator.comparing(Vegetable::getProteins));
-       return summerSalad;
+    public List<Vegetable> sortBy(SortingFilter filter) {
+        ArrayList<Vegetable> salad = new ArrayList<>(listOfVegetables);
+        if (filter.isByCalories()) {
+            salad.sort(Comparator.comparing(Vegetable::getCalories));
+        }
+        if (filter.isByFats()) {
+            salad.sort(Comparator.comparing(Vegetable::getFats));
+        }
+        if (filter.isByCarbohydrates()) {
+            salad.sort(Comparator.comparing(Vegetable::getCarbohydrates));
+        }
+        if (filter.isByProteins()) {
+            salad.sort(Comparator.comparing(Vegetable::getProteins));
+        }
+        if (filter.isByWeight()) {
+            salad.sort(Comparator.comparing(Vegetable::getWeight));
+        }
+        return salad;
     }
 
-    public  List<Vegetable> listOfCaloriesRange(){
-     List<Vegetable> listOfCaloriesRange = new ArrayList<>();
-     for (Vegetable vegetable : getSummerSalad())
-     if(vegetable.getCalories() > 10 && vegetable.getCalories() < 30){
-         listOfCaloriesRange.add(vegetable);
-     }
-     return listOfCaloriesRange;
+    public List<Vegetable> listOfCaloriesRange(double from, double to) {
+        List<Vegetable> listOfCaloriesRange = new ArrayList<>();
+        for (Vegetable vegetable : listOfVegetables)
+            if (vegetable.getCalories() > from && vegetable.getCalories() < to) {
+                listOfCaloriesRange.add(vegetable);
+            }
+        return listOfCaloriesRange;
     }
 }
